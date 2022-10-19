@@ -45,7 +45,7 @@ if (isset($_POST['btnRegister'])) {
     } else {
         include_once("connection.php");
         $pass = md5($pass1);
-        $sq = "SELECT * FROM customer WHERE Username = '$us' OR email = '$email'";
+        $sq = "SELECT * FROM Account WHERE Username = '$us' OR email = '$email'";
         $res = pg_query($Connect, $sq);
         if (pg_num_rows($res) == 0) {
             pg_query($Connect, "INSERT INTO Account (Username, Password, CustName, gender, Address, telephone, email, CusDate, CusMonth, CusYear, state)
