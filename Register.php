@@ -46,11 +46,11 @@ if (isset($_POST['btnRegister'])) {
         include_once("connection.php");
         $pass = md5($pass1);
         $sq = "SELECT * FROM customer WHERE Username = '$us' OR email = '$email'";
-        $res = mysqli_query($conn, $sq);
-        if (mysqli_num_rows($res) == 0) {
-            mysqli_query($conn, "INSERT INTO customer (Username, Password, CustName, gender, Address, telephone, email, CusDate, CusMonth, CusYear, SSN, ActiveCode, state)
+        $res = pg_query($Connect, $sq);
+        if (pg_num_rows($res) == 0) {
+            pg_query($Connect, "INSERT INTO Account (Username, Password, CustName, gender, Address, telephone, email, CusDate, CusMonth, CusYear, state)
                                     VALUES ('$us', '$pass', '$fullname', '$sex', '$address', '$tel', '$email', '$date', '$month', '$year', '', '', 0)")
-                or die(mysqli_error($conn));
+                or die("Could not Connect");
             echo "You have registered successfully";
         } else {
             echo "Username or email already exists";
