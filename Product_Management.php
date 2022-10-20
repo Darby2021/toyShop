@@ -1,16 +1,15 @@
-    <!-- Bootstrap -->
+ 
+ <!-- Bootstrap -->
     <?php
 if (isset($_SESSION['us']) == false) {
     echo "<script>alert('You need to login')</script>";
     echo '<meta http-equiv="refresh" content="0;URL=?page=login"/>';
 } else {
-    if (isset($_SESSION["admin"]) && $_SESSION["admin"] != 1) {
+    if (isset($_SESSION["state"]) && $_SESSION["state"] != 1) {
         echo "<script>alert('You are not administrator')</script>";
         echo '<meta http-equiv="refresh" content="0;URL=index.php"/>';
     } else {
 ?>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="style.css" />
     <script>
         function deleteConfirm() {
             if (confirm("Are you sure to delete!")) {
@@ -25,9 +24,9 @@ if (isset($_SESSION['us']) == false) {
     if (isset($_GET["function"]) == "del") {
         if (isset($_GET["id"])) {
             $id = $_GET["id"];
-            $result = mysqli_query($conn,"SELECT Pro_image from product where Product_ID='$id'");
-            $image = mysqli_fetch_array($result);
-            mysqli_query($conn, "DELETE from product where Product_ID='$id'");
+            $result = pg_query($Connect,"SELECT Pro_image from product where Product_ID='$id'");
+            $image = pg_fetch_array($result);
+            pg_query($Connect, "DELETE from product where Product_ID='$id'");
         }
     }    
     ?>
@@ -55,11 +54,11 @@ if (isset($_SESSION['us']) == false) {
                 <?php
                 include_once("connection.php");
                 $No = 1;
-                $result = mysqli_query($conn, "SELECT Product_ID, Product_Name, Price, Pro_qty, Pro_image, Cat_Name
+                $result = pg_query($Connect, "SELECT Product_ID, Product_Name, Price, Pro_qty, Pro_image, Cat_Name
                     FROM product a, category b
                     WHERE a.Cat_ID = b.Cat_ID
                     ORDER BY ProDate DESC");
-                while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+                while ($row = pg_fetch_array($result, MYSQLI_ASSOC)) {
                 ?>
                     <tr>
                         <td><?php echo $No; ?></td>

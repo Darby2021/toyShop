@@ -53,11 +53,11 @@ include_once("connection.php");
                         <h2 class="section-title">Product</h2>
                         <div class="product-carousel">
                            <?php
-		  				   	           $result = mysqli_query($conn, "SELECT * FROM product" );
+		  				   	           $result = pg_query($Connect, "SELECT * FROM product" );
 			                      if (!$result) {
-                                die('Invalid query: ' . mysqli_error($conn));
+                                die('Invalid query: ' . "Could not is connect");
                                 }
-			                      while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+			                      while($row = pg_fetch_array($result)){
 				                      ?>
                             <div class="col-md-3" >
                             <div class="card" style="text-align:center;">

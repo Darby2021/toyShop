@@ -59,15 +59,15 @@ if (isset($_POST['btnLogin'])) {
 	if ($pa == "") {
 		$err .= "Enter Password, please<br/>";
 	}
-
 	if ($err != "") {
 		echo $err;
 	} else {
 		include_once("connection.php");
 		$pass = md5($pa);
-		$res = mysqli_query($conn, "SELECT Username, Password, state FROM Customer WHERE Username = '$us' AND Password = '$pass'") or die(mysqli_error($conn));
-		$row = mysqli_fetch_array($res, MYSQLI_ASSOC);
-		if (mysqli_num_rows($res) == 1) {
+		$res = pg_query($Connect, "SELECT username, password, state FROM account WHERE username = '$us' AND password = '$pass'")
+		 or die("Could not connect");
+		$row = pg_fetch_array($res);
+		if (pg_num_rows($res) == 1) {
 			$_SESSION["us"] = $us;
 			$_SESSION["admin"] = $row["state"];
 			echo '<meta http-equiv="refresh" content = "0; URL=index.php"/>';
