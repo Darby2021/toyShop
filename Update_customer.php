@@ -1,11 +1,11 @@
 <?php
-$query = "SELECT CustName, Address, email, telephone FROM customer WHERE Username = '" . $_SESSION["us"]. "'";
-$result = mysqli_query($conn, $query) or die(mysqli_error($conn));
-$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+$query = "SELECT custname, address, email, telephone FROM account WHERE username = '" . $_SESSION["us"]. "'";
+$result = pg_query($Connect, $query) or die("Could not is Connect");
+$row = pg_fetch_array($result);
 $us = $_SESSION["us"];
 $email = $row["email"];
-$fullname = $row["CustName"];
-$address = $row["Address"];
+$fullname = $row["custname"];
+$address = $row["address"];
 $telephone = $row["telephone"];
 
 if(isset($_POST['btnUpdate'])){
@@ -17,23 +17,22 @@ if(isset($_POST['btnUpdate'])){
 		if($_POST['txtPass1']!=""){
 			$pass = md5($_POST['txtPass1']);
 
-			$sq = "UPDATE customer
-			SET CustName='$fullname', Address='$address',
-			telephone='$telephone', Password='$pass'
-			WHERE Username = '". $_SESSION['us'] . "'";
+			$sq = "UPDATE account
+			SET custname='$fullname', address='$address',
+			telephone='$telephone', password='$pass'
+			WHERE username = '". $_SESSION['us'] . "'";
 
-			mysqli_query($conn,$sq) or die(mysqli_error($conn));
+			pg_query($Connect,$sq) or die("Could not is connect");
 		}
 		else 
 		{
-			$sq = "UPDATE customer
-			SET CustName='$fullname', Address='$address',
-			telephone='$telephone' WHERE Username = '". $_SESSION['us']. "'";
-			mysqli_query($conn, $sq) or die(mysqli_error($conn));
+			$sq = "UPDATE account
+			SET custname='$fullname', address='$address',
+			telephone='$telephone' WHERE username = '". $_SESSION['us']. "'";
+			pg_query($Connect, $sq) or die("Could not is connect");
 		}
 			echo '<meta http-equiv="refresh" content="0;URL=index.php"/>';
 		}else{
-		
 				echo $test;
 			}
 		}
@@ -62,7 +61,6 @@ function check()
 				<br>
                 <br>
 <h2>Update Profile Customer</h2>
-
 			 	<form id="form1" name="form1" method="post" action="" class="form-horizontal" role="form">
 					<div class="form-group">
 						    
@@ -117,6 +115,7 @@ function check()
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
 						      <input type="submit" class="btn btn-warning" style="color:black" name="btnUpdate" id="btnUpdate" value="Update"/>
+							  <input type="submit" name="btnCancel" class="btn btn-primary" id="btnLogin" value="Cancel" />
                               	
 						</div>
 					</div>

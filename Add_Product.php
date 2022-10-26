@@ -3,14 +3,36 @@
     <script type="text/javascript" src="scripts/ckeditor/ckeditor.js"></script>
     <?php
 	include_once("connection.php");
-	function bind_Category_List($conn)
+	function bind_Category_List($Connect)
 	{
-		$sqlstring = "SELECT Cat_ID, Cat_Name from category";
-		$result = mysqli_query($conn, $sqlstring);
+		$sqlstring = "SELECT cat_id, cat_name from category";
+		$result = pg_query($Connect, $sqlstring);
 		echo "<select name='CategoryList' class='form-control'>
 					<option value='0'>Choose category</option>";
-		while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-			echo "<option value='" . $row['Cat_ID'] . "'>" . $row['Cat_Name'] . "</option>";
+		while ($row = pg_fetch_array($result)) {
+			echo "<option value='" . $row['cat_id'] . "'>" . $row['cat_name'] . "</option>";
+		}
+		echo "</select>";
+	}
+	function bind_Shop_List($Connect)
+	{
+		$sqlstring = "SELECT shop_id, shop_name from shop";
+		$result = pg_query($Connect, $sqlstring);
+		echo "<select name='ShopList' class='form-control'>
+					<option value='0'>Choose Shop</option>";
+		while ($row = pg_fetch_array($result)) {
+			echo "<option value='" . $row['shop_id'] . "'>" . $row['shop_name'] . "</option>";
+		}
+		echo "</select>";
+	}
+	function bind_Supplier_List($Connect)
+	{
+		$sqlstring = "SELECT sup_id, sup_name from supplier";
+		$result = pg_query($Connect, $sqlstring);
+		echo "<select name='SupplierList' class='form-control'>
+					<option value='0'>Choose supplier</option>";
+		while ($row = pg_fetch_array($result)) {
+			echo "<option value='" . $row['sup_id'] . "'>" . $row['sup_name'] . "</option>";
 		}
 		echo "</select>";
 	}
@@ -24,6 +46,8 @@
 		$qty = $_POST["txtQty"];
 		$pic = $_FILES["txtImage"];
 		$category = $_POST["CategoryList"];
+		$supplier = $_POST["SupplierList"];
+		$shop = $_POST["ShopList"];
 		$err = "";
 
 		if(trim($id) == "")
@@ -37,6 +61,14 @@
 		if($category == "0")
 		{
 			$err.="<li>Choose product category, please</li>";
+		}
+		if($supplier == "0")
+		{
+			$err.="<li>Choose product supplier, please</li>";
+		}
+		if($shop == "0")
+		{
+			$err.="<li>Choose product shop, please</li>";
 		}
 		if(!is_numeric($price))
 		{
@@ -56,15 +88,14 @@
 			{
 				if($pic["size"] < 614400)
 				{
-					$sq = "SELECT * FROM product WHERE Product_ID = '$id' or Product_Name = '$proname'";
-					$result = mysqli_query($conn, $sq);
-					if(mysqli_num_rows($result) == 0)
+					$sq = "SELECT * FROM product WHERE product_id = '$id' or product_name = '$proname'";
+					$result = pg_query($Connect, $sq);
+					if(pg_num_rows($result) == 0)
 					{
-						copy($pic['tmp_name'], "product-imgs/".$pic['name']);
 						$filePic = $pic['name'];
-						$sqlstring = "INSERT INTO product (Product_ID, Product_Name, Price, SmallDesc, DetailDesc, ProDate, Pro_qty, Pro_image, Cat_ID)
-							VALUES ('$id', '$proname', '$price', '$short', '$detail', '".date('Y-m-d H:i:s')."', $qty, '$filePic', '$category')";
-						mysqli_query($conn, $sqlstring);
+						$sqlstring = "INSERT INTO product (product_id, product_name, price, smalldesc, detaildesc, prodate, pro_qty, pro_image, cat_id, sup_id, shop_id)
+							VALUES ('$id', '$proname', '$price', '$short', '$detail', '".date('Y-m-d H:i:s')."', $qty, '$filePic', '$category', '$supplier', '$shop')";
+						pg_query($Connect, $sqlstring);
 						echo '<meta http-equiv="refresh" content = "0; URL=?page=product_management"/>';
 					}
 					else
@@ -103,7 +134,25 @@
     			<label for="" class="col-sm-2 control-label">Product category(*): </label>
     			<div class="col-sm-10">
     				<?php
-					bind_Category_List($conn);
+					bind_Category_List($Connect);
+					?>
+    			</div>
+    		</div>
+
+			<div class="form-group">
+    			<label for="" class="col-sm-2 control-label">Product Supplier(*): </label>
+    			<div class="col-sm-10">
+    				<?php
+					bind_Supplier_List($Connect);
+					?>
+    			</div>
+    		</div>
+
+			<div class="form-group">
+    			<label for="" class="col-sm-2 control-label">Product Shop(*): </label>
+    			<div class="col-sm-10">
+    				<?php
+					bind_Shop_List($Connect);
 					?>
     			</div>
     		</div>

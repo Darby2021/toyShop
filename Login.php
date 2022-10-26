@@ -65,7 +65,7 @@ if (isset($_POST['btnLogin'])) {
 		include_once("connection.php");
 		$pass = md5($pa);
 		$res = pg_query($Connect, "SELECT username, password, state FROM account WHERE username = '$us' AND password = '$pass'")
-		 or die("Could not connect");
+		or die("Could not connect");
 		$row = pg_fetch_array($res);
 		if (pg_num_rows($res) == 1) {
 			$_SESSION["us"] = $us;

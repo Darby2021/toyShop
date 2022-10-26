@@ -17,33 +17,15 @@ include_once("connection.php");
           </div>
           <div class="carousel-inner">
             <div class="carousel-item active">
-              <img src="image/1.png" class="d-block w-100" alt="...">
+              <img src="image/lu.jpg" class="d-block w-100" alt="...">
               <div class="carousel-caption d-none d-md-block"></div>
             </div>  
-            <div class="carousel-item">
-              <img src="image/12.png" class="d-block w-100" alt="...">
-              <div class="carousel-caption d-none d-md-block"></div>
-            </div>
-            <div class="carousel-item">
-              <img src="image/13.png" class="d-block w-100" alt="...">
-              <div class="carousel-caption d-none d-md-block">
                 <h5></h5>
                 <p></p>
               </div>
             </div>
-          </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
-        </div>
 			</div>
     </div> 
-    
     <div class="maincontent-area">
         <div class="zigzag-bottom"></div>
         <div class="container">
@@ -59,27 +41,27 @@ include_once("connection.php");
                                 }
 			                      while($row = pg_fetch_array($result)){
 				                      ?>
-                            <div class="col-md-3" >
+                            <div class="col-md-4" >
                             <div class="card" style="text-align:center;">
-                                <img src="imgProduct/<?=$row['Pro_image']?>"class="card-img-top" style="margin: auto; width: 150;" width="50%"height="50"/>
-                                <div class="card-body" style="display:inline-block">
-                                <a href="#" class="text-decoration-none"><h5 class="card-title"><?=$row['Product_Name']?></h5></a>
-                                <h6 class="card-subtitle mb-2 text-muted"><span>&#8363;</span><?=$row['Price']?></h6>
+                                <img src="imgProduct/<?=$row['pro_image']?>"class="card-img-top" style="" width="200"height="200"/>
+                                <a href="#" class="text-decoration-none"> <h5 class="card-title"><?=$row['product_name']?></h5></a>
+                                <h6 class="card-subtitle mb-2 text-muted"><span>&#8363;</span><?=$row['price']?></h6>
                                 <a href="#" class="btn btn-primary">Buy</a>
-                                </div>
                             </div>
                             <br>
                             </div>        
                          </div>
-                <?php   
-				}
-				?>
+                         <?php   
+				                  }
+				                  ?>
                         </div>
-                    </div>
+                        
                 </div>
             </div>
         </div>
-    </div> 
+        </div>
+        </div>
+    
     
     
    

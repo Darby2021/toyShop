@@ -24,9 +24,9 @@ if (isset($_SESSION['us']) == false) {
     if (isset($_GET["function"]) == "del") {
         if (isset($_GET["id"])) {
             $id = $_GET["id"];
-            $result = pg_query($Connect,"SELECT Pro_image from product where Product_ID='$id'");
+            $result = pg_query($Connect,"SELECT Pro_image from product where product_ID='$id'");
             $image = pg_fetch_array($result);
-            pg_query($Connect, "DELETE from product where Product_ID='$id'");
+            pg_query($Connect, "DELETE from product where product_ID='$id'");
         }
     }    
     ?>
@@ -36,7 +36,7 @@ if (isset($_SESSION['us']) == false) {
             <a href="?page=add_product">
             <img src="img/add.png" alt="Add" width="16" height="16" border="0"/> Add new</a>
         </p>
-        <table id="tableproduct" class="table table-striped table-bordered" cellspacing="0" width="100%">
+        <table id="tableProduct" class="table table-striped table-bordered" cellspacing="0" width="100%">
             <thead>
                 <tr>
                     <th><strong>No.</strong></th>
@@ -45,6 +45,8 @@ if (isset($_SESSION['us']) == false) {
                     <th><strong>Price</strong></th>
                     <th><strong>Quantity</strong></th>
                     <th><strong>Category ID</strong></th>
+                    <th><strong>Supplier ID</strong></th>
+                    <th><strong>Campus ID</strong></th>
                     <th><strong>Image</strong></th>
                     <th><strong>Edit</strong></th>
                     <th><strong>Delete</strong></th>
@@ -54,29 +56,33 @@ if (isset($_SESSION['us']) == false) {
                 <?php
                 include_once("connection.php");
                 $No = 1;
-                $result = pg_query($Connect, "SELECT Product_ID, Product_Name, Price, Pro_qty, Pro_image, Cat_Name
-                    FROM product a, category b
-                    WHERE a.Cat_ID = b.Cat_ID
-                    ORDER BY ProDate DESC");
-                while ($row = pg_fetch_array($result, MYSQLI_ASSOC)) {
+                $result = pg_query($Connect, "SELECT product.product_ID, product.product_Name, product.price, product.pro_qty, product.pro_image, category.cat_name, supplier.sup_name, shop.shop_name
+                FROM product
+                INNER JOIN supplier ON product.sup_id = supplier.sup_id
+				INNER JOIN category ON product.cat_id = category.cat_id
+				INNER JOIN shop ON product.shop_id = shop.shop_id
+                ORDER BY prodate DESC");
+                while ($row = pg_fetch_array($result)) {
                 ?>
                     <tr>
                         <td><?php echo $No; ?></td>
-                        <td><?php echo $row["Product_ID"]; ?></td>
-                        <td><?php echo $row["Product_Name"]; ?></td>
-                        <td><?php echo $row["Price"]; ?></td>
-                        <td><?php echo $row["Pro_qty"]; ?></td>
-                        <td><?php echo $row["Cat_Name"]; ?></td>
+                        <td><?php echo $row["product_id"]; ?></td>
+                        <td><?php echo $row["product_name"]; ?></td>
+                        <td><?php echo $row["price"]; ?></td>
+                        <td><?php echo $row["pro_qty"]; ?></td>
+                        <td><?php echo $row["cat_name"]; ?></td>
+                        <td><?php echo $row["sup_name"]; ?></td>
+                        <td><?php echo $row["shop_name"]; ?></td>
                         <td align='center'>
-                            <img src='imgProduct/<?php echo $row["Pro_image"] ?>' border='0' width="50" height="50" />
+                            <img src='imgProduct/<?php echo $row["pro_image"] ?>' border='0' width="50" height="50" />
                         </td>
                         <td align='center'>
-                            <a href="?page=update_product&&id=<?php echo $row['Product_ID']; ?>"> 
+                            <a href="?page=update_product&&id=<?php echo $row['product_id']; ?>"> 
                                 <img src="img/settings.png" width="16" height="16" border='0' />
                             </a>
                         </td>
                             <td align='center'>
-                                <a href="?page=product_management&&function=del&&id=<?php echo $row["Product_ID"]; ?>" onclick="return deleteConfirm()">
+                                <a href="?page=product_management&&function=del&&id=<?php echo $row["product_id"]; ?>" onclick="return deleteConfirm()">
                                     <img src="img/delete.png" border='0' width="16" height="16" /></a>
                             </td>
                     </tr>

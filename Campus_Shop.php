@@ -31,21 +31,22 @@ if (isset($_SESSION['us']) == false) {
                     if(isset($_GET["id"]))
                     {
                         $id = $_GET["id"];
-                        pg_query($Connect, "DELETE FROM category WHERE cat_id = '$id'");
+                        pg_query($Connect, "DELETE FROM shop WHERE shop_id = '$id'");
                     }
                 }
     ?>
     <form name="frm" method="post" action="">
-        <h1>Product Category</h1>
+        <h1>Campus</h1>
         <p>
-            <img src="img/add.png" alt="Add new" width="16" height="16" border="0" /> <a href="?page=add_category"> Add Category</a>
+            <img src="img/add.png" alt="Add new" width="16" height="16" border="0" /> <a href="?page=add_shop"> Add Campus</a>
         </p>
-        <table id="tablecategory" class="table table-striped table-bordered" cellspacing="0" width="100%">
+        <table id="tableCampus" class="table table-striped table-bordered" cellspacing="0" width="100%">
             <thead>
                 <tr>
                     <th><strong>No.</strong></th>
-                    <th><strong>Category Name</strong></th>
-                    <th><strong>Desscription</strong></th>
+                    <th><strong>Shop_ID</strong></th>
+                    <th><strong>Shop_Name</strong></th>
+                    <th><strong>Address</strong></th>
                     <th><strong>Edit</strong></th>
                     <th><strong>Delete</strong></th>
                 </tr>
@@ -53,20 +54,21 @@ if (isset($_SESSION['us']) == false) {
             <tbody>
                 <?php
                 $No = 1;
-                $result = pg_query($Connect, "SELECT * FROM category");
+                $result = pg_query($Connect, "SELECT * FROM shop");
                 while ($row = pg_fetch_array($result)) {
                 ?>
                     <tr>
                         <td class="text-center"><?php echo $No; ?></td>
-                        <td><?php echo $row["cat_name"]; ?></td>
-                        <td><?php echo $row["cat_des"]; ?></td>
+                        <td><?php echo $row["shop_id"]; ?></td>
+                        <td><?php echo $row["shop_name"]; ?></td>
+                        <td><?php echo $row["address_shop"]; ?></td>
                         <td style='text-align:center'>
-                            <a href="?page=update_category&&id=<?php echo $row["cat_id"]; ?>">
+                            <a href="?page=update_shop&&id=<?php echo $row["shop_id"]; ?>">
                                 <img src='img/settings.png' width="16" height="16" border='0'/>
                             </a>
                         </td>
                         <td style='text-align:center'>
-                            <a href="?page=category_management&&function=del&&id=<?php echo $row["cat_id"]; ?>" onclick=" return deleteConfirm()">
+                            <a href="?page=campus_shop&&function=del&&id=<?php echo $row["shop_id"]; ?>" onclick=" return deleteConfirm()">
                             <img src='img/delete.png' width="16" height="16" border="0" /></a></td>
                     </tr>
                 <?php

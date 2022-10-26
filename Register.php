@@ -23,7 +23,7 @@ if (isset($_POST['btnRegister'])) {
         $sex = $_POST['grpRender'];
     }
 
-    $date = $_POST['slDate'];
+    $day = $_POST['slDay'];
     $month = $_POST['slMonth'];
     $year = $_POST['slYear'];
 
@@ -48,8 +48,8 @@ if (isset($_POST['btnRegister'])) {
         $sq = "select * from account where username = '$us' or email= '$email'";
         $res = pg_query($Connect, $sq);
         if (pg_num_rows($res) == 0) {
-            pg_query($Connect, "INSERT INTO account (username, password, custname, gender, address, telephone, email, CusDate, CusMonth, CusYear, state)
-                                    VALUES ('$us', '$pass', '$fullname', '$sex', '$address', '$tel', '$email', '$date', '$month', '$year', 0)")
+            pg_query($Connect, "INSERT INTO account (username, password, custname, gender, address, telephone, email, CusDay, CusMonth, CusYear, state)
+                                    VALUES ('$us', '$pass', '$fullname', '$sex', '$address', '$tel', '$email', '$day', '$month', '$year', 0)")
                 or die("Could not Connect");
             echo "You have registered successfully";
         } else {
