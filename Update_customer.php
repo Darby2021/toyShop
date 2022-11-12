@@ -21,17 +21,18 @@ if(isset($_POST['btnUpdate'])){
 			SET custname='$fullname', address='$address',
 			telephone='$telephone', password='$pass'
 			WHERE username = '". $_SESSION['us'] . "'";
-
 			pg_query($Connect,$sq) or die("Could not is connect");
+			echo"You have successfully updated your account";
 		}
 		else 
 		{
 			$sq = "UPDATE account
 			SET custname='$fullname', address='$address',
 			telephone='$telephone' WHERE username = '". $_SESSION['us']. "'";
-			pg_query($Connect, $sq) or die("Could not is connect");
+			pg_query($Connect, $sq) 
+			or die("Could not is connect");
+			echo"You have successfully updated your account";
 		}
-			echo '<meta http-equiv="refresh" content="0;URL=index.php"/>';
 		}else{
 				echo $test;
 			}

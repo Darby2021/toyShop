@@ -23,7 +23,7 @@ if (isset($_POST['btnRegister'])) {
         $sex = $_POST['grpRender'];
     }
 
-    $day = $_POST['slDay'];
+    $day = $_POST['slDate'];
     $month = $_POST['slMonth'];
     $year = $_POST['slYear'];
 
@@ -48,7 +48,7 @@ if (isset($_POST['btnRegister'])) {
         $sq = "select * from account where username = '$us' or email= '$email'";
         $res = pg_query($Connect, $sq);
         if (pg_num_rows($res) == 0) {
-            pg_query($Connect, "INSERT INTO account (username, password, custname, gender, address, telephone, email, CusDay, CusMonth, CusYear, state)
+            pg_query($Connect, "INSERT INTO account (username, password, custname, gender, address, telephone, email, cusday, cusmonth, cusyear, state)
                                     VALUES ('$us', '$pass', '$fullname', '$sex', '$address', '$tel', '$email', '$day', '$month', '$year', 0)")
                 or die("Could not Connect");
             echo "You have registered successfully";
@@ -131,7 +131,7 @@ if (isset($_POST['btnRegister'])) {
                         <label for="lblBirthDay" class="col-sm-2 control-label">Date of Birth(*): </label>
                         <div class="col-sm-10 input-group">
                             <span class="input-group-btn">
-                                <select name="slDate" id="slDate" class="form-control">
+                                <select name="slDate" id="lDate" class="form-control">
                                     <option value="0">Choose Date</option>
                                     <?php
                                     for ($i = 1; $i <= 31; $i++) {

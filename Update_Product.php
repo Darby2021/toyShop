@@ -9,22 +9,39 @@
 		$result = pg_query($Connect, $sqlstring);
 		echo "<select name='CategoryList' class='form-control'>
 					<option value='0'>Choose category</option>";
+					while ($row = pg_fetch_array($result)) {
+						echo "<option value='" . $row['cat_id'] . "'>" . $row['cat_name'] . "</option>";
+					}
+					echo "</select>";
+	}
+	function bind_Shop_List($Connect)
+	{
+		$sqlstring = "SELECT shop_id, shop_name from shop";
+		$result = pg_query($Connect, $sqlstring);
+		echo "<select name='ShopList' class='form-control'>
+					<option value='0'>Choose Shop</option>";
 		while ($row = pg_fetch_array($result)) {
-			if ($row['cat_id'] == $selectValue) {
-				echo "<option value='" . $row['cat_id'] . "' selected>" . $row['cat_Name'] . "</option>";
-			} else {
-				echo "<option value='" . $row['cat_id'] . "'>" . $row['cat_name'] . "</option>";
-			}
+			echo "<option value='" . $row['shop_id'] . "'>" . $row['shop_name'] . "</option>";
+		}
+		echo "</select>";
+	}
+	function bind_Supplier_List($Connect)
+	{
+		$sqlstring = "SELECT sup_id, sup_name from supplier";
+		$result = pg_query($Connect, $sqlstring);
+		echo "<select name='SupplierList' class='form-control'>
+					<option value='0'>Choose supplier</option>";
+		while ($row = pg_fetch_array($result)) {
+			echo "<option value='" . $row['sup_id'] . "'>" . $row['sup_name'] . "</option>";
 		}
 		echo "</select>";
 	}
 	if (isset($_GET["id"])) {
 		$id = $_GET["id"];
-		$sqlstring = "SELECT product_name, price, smalldesc, detaildesc, prodate, pro_qty, pro_image, cat_id
+		$sqlstring = "SELECT product_name, price, smalldesc, detaildesc, prodate, pro_qty, pro_image, cat_id, sup_id, shop_id
 						FROM product WHERE product_id = '$id'";
 		$result = pg_query($Connect, $sqlstring);
 		$row = pg_fetch_array($result);
-
 		$proname = $row["product_name"];
 		$short = $row["smalldesc"];
 		$detail = $row["detaildesc"];
@@ -32,6 +49,8 @@
 		$qty = $row["pro_qty"];
 		$pic = $row["pro_image"];
 		$category = $row["cat_id"];
+		$supplier = $row["sup_id"];
+		$shop = $row["shop_id"];
 	?>
     	<div class="container">
     		<h2>Updating Product</h2>
@@ -57,6 +76,23 @@
 						?>
     				</div>
     			</div>
+				<div class="form-group">
+    			<label for="" class="col-sm-2 control-label">Product Supplier(*): </label>
+    			<div class="col-sm-10">
+    				<?php
+					bind_Supplier_List($Connect);
+					?>
+    			</div>
+    		</div>
+
+			<div class="form-group">
+    			<label for="" class="col-sm-2 control-label">Product Shop(*): </label>
+    			<div class="col-sm-10">
+    				<?php
+					bind_Shop_List($Connect);
+					?>
+    			</div>
+    		</div>
 
     			<div class="form-group">
     				<label for="lblGia" class="col-sm-2 control-label">Price(*): </label>
